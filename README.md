@@ -1,5 +1,6 @@
-# Implementační dokumentace 1. části projektu z IPP 2022
-Autor: Štěpán Bílek
+Implementační dokumentace k 1. úloze z IPP 2021/2022
+
+Jméno a Příjemní: Štěpán Bílek
 
 Login: xbilek25
 
