@@ -7,7 +7,7 @@ Login: xbilek25
 Úkolem syntaktického analyzátoru je zpracování a kontrola kódu zapsaného v jazyce IPPcode22. Výstupem je struktura v jazyce XML, která obsahuje informace o vstupním kódu.
 
 ### 1.1 Zpracování argumentů
-Zpracování argumentů probíhá pomocí jednoduché podmínky - pokud je skripto spouštěn s více než jedním argumentem, nebo s jedním argumentem, jiným než ```--help```, vrátí skript chybu, jinak pracuje dále.
+Zpracování argumentů probíhá pomocí jednoduché podmínky - pokud je skript spouštěn s více než jedním argumentem, nebo s jedním argumentem, jiným než ```--help```, vrátí skript chybu, jinak pracuje dále.
 
 ### 1.2 Načítání vstupu
 Načítání vstupu probíhá v cyklu while po jednotlívých řádcích. Pokud je řádek prázdný, nebo obsahuje pouze komentář, je v cyklu přeskočen. Při průchodu prvním validním řádkem je provedena kontrola hlavičky. Toho aby se hlavička kontrolovala pouze při prvních průchodu se dosahuje přepsáním booleové globální proměnné ```header```. Každý další řádek je při načtení zbaven zbytečných bílých znaků a komentářů.
