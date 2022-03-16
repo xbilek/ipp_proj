@@ -1,19 +1,23 @@
 <?php
 ini_set('dispalay_errors', 'stderr');
 
+//globalni promenne
 
+//pro kontrolu hlavicky 
 $header = False;
 
+//pro poradi instrukci
 $instructionNum = 1;
 
+//pro rozliseni promenne a konstanty
 $variable = True;
 
-
+//pro vystup
 $output = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 $output.= "<program language=\"IPPcode22\">\n";
 
 
-
+// funkce bere jako parametr string, a vraci stejny string s odstranenym komentarem
 Function removeComment (string $comLine)
 {
     if (strpos($comLine, '#') != NULL)
@@ -23,7 +27,7 @@ Function removeComment (string $comLine)
     return $comLine;
 }
 
-
+//fukce ktere bere jako parametr poradi instrukce a jeji operacni kod, prida tyto informace ve spravnem xml formatu na vystup
 Function addInstruction (int $order, string $opcode)
 {
     global $output;
@@ -34,18 +38,21 @@ Function addInstruction (int $order, string $opcode)
     $output.= "\">\n";
 }
 
+//funkce, ktera prida na vystup XML ukonceni instrukce
 Function endInstruction()
 {
     global $output;
     $output.= "</instruction>\n";
 }
 
+//funkce, ktera bere jako parametry cislo, typ a data argumentu a a prida je na vystup ve spravnem xml fomatu
 Function addArgument(int $argNum, string $argType, string $argData)
 {
     global $output;
     $output.= "<arg".$argNum." type=\"".$argType."\">".$argData."</arg".$argNum.">\n";
 }
 
+//funkce, ktera bere jako parametr pozadovany pocet argumentu a pole argumentu, pokud pocet argumentu nesouhlasi s pozadovanym cislem vrati chybu
 Function argumentCountCheck(int $num, array $data)
 {
     if($num != count($data) - 1)
@@ -55,6 +62,7 @@ Function argumentCountCheck(int $num, array $data)
     }
 }
 
+//funkce, ktera bere jako parametr promennou, srovna ji s odpovidajicim regularnim vyrazem a pokud nesouhlasi, vrati chybu
 Function varCheck(string $var)
 {
     if (!preg_match("/^(LF|TF|GF)@[a-zA-Z_$&%*!?-][a-zA-Z0-9_$&%*!?-]*$/", $var))
@@ -64,6 +72,7 @@ Function varCheck(string $var)
     }
 }
 
+//funkce, ktera bere jako parametr navesti, srovna ho s odpovidajicim regularmin vyrazem a pokud nesouhlasi, vrati chybu
 Function labelCheck(string $label)
 {
     if (!preg_match("/^[a-zA-Z_$&%*!?-][a-zA-Z0-9_$&%*!?-]*$/", $label))
@@ -74,6 +83,7 @@ Function labelCheck(string $label)
 
 }
 
+//funkce, ktera bere jako parametr symbol, srovna ho s odpovidajicim regularmin vyrazem a pokud nesouhlasi, vrati chybu
 Function symbolCheck(string $symbol)
 {
     if (!(preg_match("/^(GF|LF|TF|bool|nil)@[a-zA-Z_$&%*!?-][\S]*/", $symbol) || preg_match("/^string@[\S]*$/", $symbol) ||preg_match("/^int@[+-]{0,1}[\d]{1,}$/", $symbol)))
@@ -83,6 +93,7 @@ Function symbolCheck(string $symbol)
     }
 }
 
+//funkce, ktera bere jako parametr typ, pokud je spatne zapsany, vrati chybu
 Function typeCheck(string $type)
 {
     if (!($type == "int" || $type == "string" || $type == "bool"))
@@ -92,6 +103,7 @@ Function typeCheck(string $type)
     }
 }
 
+//funkce, ktera bere jako parametr symbol, vrati jeho typ
 Function get_Type(string $symbol)
 {
     if (strpos($symbol, '@') != NULL)
@@ -101,6 +113,7 @@ Function get_Type(string $symbol)
     return $symbol;
 }
 
+//funkce, ktera bere jako parametr symbol a vrati promennou ve spravnem tvaru
 Function toVar($symbol)
 {
     global $variable;
@@ -114,6 +127,7 @@ Function toVar($symbol)
     return $symbol;
 }
 
+//funkce ktera bere jako parametr symbol, vrati jeho hodnotu
 Function getValue(string $symbol)
 {
     global $variable;
@@ -128,6 +142,8 @@ Function getValue(string $symbol)
     return $symbol;
 }
 
+
+//zpracovani argumentu
 if($argc == 2)
 {
     if($argv[1] == "--help")
@@ -149,15 +165,16 @@ else if($argc > 2)
 
 
 
-
+//hlavni smycka
 while($line = fgets(STDIN))
-{
+{   
+    //odstarneni prazdnych radku a radku obsahujicich pouze komentar
     if ($line == "\n" || $line[0] == '#')
     {
         continue;
     }
 
-
+    //kontrola hlavicky
     if(!$header)
     {
         $line = rtrim(trim(removeComment($line), "\n"));
@@ -173,8 +190,10 @@ while($line = fgets(STDIN))
         }
     }
 
+    //odsratneni prebytecnych bilych mezer, znaku novych radku a kometnaru
     $normalizedLine = explode(' ', rtrim(removeComment(trim(ltrim($line)), "\n")));
 
+    //switch ktery zpracovava kod podle instrukci na vstupu
     switch(strtoupper($normalizedLine[0]))
     {
 
@@ -185,7 +204,7 @@ while($line = fgets(STDIN))
         case 'BREAK':
         {
             argumentCountCheck(0, $normalizedLine);
-            addInstruciont($instructionNum, $normalizedLine[0]);
+            addInstruction($instructionNum, $normalizedLine[0]);
             endInstruction();
             break;
         }
@@ -299,7 +318,7 @@ while($line = fgets(STDIN))
 
 
 $output.= "</program>\n";
-
+//vypsani pozadovaneho nma stardni vystup
 echo $output;
 
 
