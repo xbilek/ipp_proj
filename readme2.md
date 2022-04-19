@@ -15,7 +15,7 @@ Pro načítání vstupu se využívá knihovna  ```xml.etree.ElementTree```. Zpr
 
 ### 1.3 Interpretace kódu
 
-### 1.3.1 Třídy
+#### 1.3.1 Třídy
 Pro přístup k instrukcím, proměnným a argumentům slouží tříd ```Instruction```, ```Argument``` a ```Variable```.
 
 #### 1.3.2 Rámce
