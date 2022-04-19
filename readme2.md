@@ -16,7 +16,7 @@ Pro načítání vstupu se využívá knihovna  ```xml.etree.ElementTree```. Zpr
 ### 1.3 Interpretace kódu
 
 ### 1.3.1 Třídy
-Pro přístup k instrukcím, proměnným a argumentům slouží tříd ```Instruction, Argument a Variable```.
+Pro přístup k instrukcím, proměnným a argumentům slouží tříd ```Instruction```, ```Argument``` a ```Variable```.
 
 #### 1.3.2 Rámce
 Všechny rámce jsou realizovány pomocí globálních proměnných. Globální rámec v podobě slovníku ```GF```, dočasný rámec v podobě proměnné ```TF``` a lokální rámec v podobě seznamu ```LF```
