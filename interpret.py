@@ -7,6 +7,8 @@ from sys import stderr, stdin, exit
 import re
 import xml.etree.ElementTree as ET
 
+
+# globalni promenne
 source_file = ""
 input_file = ""
 instructions = list()
@@ -16,9 +18,8 @@ GF = dict()
 TF = None
 LF = list()
 calls = list()
-# ##CLASSES
 
-
+# definice trid
 class Instruction:
     def __init__(self, instr_opcode, number):
         self.instr_opcode = instr_opcode
@@ -40,6 +41,9 @@ class Variable:
         self.type = type
         self.value = value
 
+# definice funkci pro kontrolu chyb
+
+# funkce bere jako parametr instrukci a kontroluje zda ma spravny pocet argumentu, pokud nema, vraci chybu
 def check_arguments_count(instruction):
     if (instruction.instr_opcode == "CREATEFRAME" or
         instruction.instr_opcode == "PUSHFRAME" or
@@ -92,6 +96,8 @@ def check_arguments_count(instruction):
 def check_instruction(i):
     check_arguments_count(i)
 
+# funkce bere jako parametry zpusob ulozeni promenne a samotnou pormennou,
+# zkontroluje zda byla inicializovana, pokud ne, tak skonci chybou
 def check_var_init(frame, var):
     if frame == "GF":
         if not (var in GF.keys()):
@@ -117,7 +123,7 @@ def check_var_init(frame, var):
         stderr.write("error wrong frame\n")
         exit(99)
 
-
+# funkce bere jako parametry zpusob ulozeni promenne a jeji nazev, vraci promennou
 def get_variable(frame, name):
     global TF
     global LF
@@ -143,6 +149,7 @@ def get_variable(frame, name):
             exit(54)
         return LF[len(LF)-1][name]
 
+# funkce bere jako parametry zpusob ulozeni, nazev a argument(hodnotu) promenne, do promenne s nazvem ulozi hodnotu
 def save_var(frame, name, arg):
     if re.match(r"(int|string|bool|nil)", arg.type):
         if frame == "GF":
@@ -182,7 +189,7 @@ def save_var(frame, name, arg):
         stderr.write("error saving variable\n")
         exit(99)
 
-
+# ################### funkce vykonavajici instrukce jazyka IPPcode22 ################3
 def move(var, symb):
     split = var.value.split("@")
     check_var_init(split[0], split[1])
@@ -592,7 +599,7 @@ def instruction_exit(symb):
         exit(57)
     exit(symb.value)
 
-
+# funkce bere jako parametr instrukci, podle jejiho opcodu zavola odpovidajici funkci a ta instrukci vykona
 def interpret_instruction(instruction):
     if instruction.instr_opcode == "MOVE":
         var = instruction.args[0]
@@ -710,9 +717,7 @@ def interpret_instruction(instruction):
         instruction_type(var, symb)
 
 
-# # ###argumenty
-
-
+# zpracovani argumentu pomoci knihovny argparse
 arguments = argparse.ArgumentParser()
 arguments.add_argument("--source", nargs=1, help="input XML code")
 arguments.add_argument("--input", nargs=1, help="input for interpreted code")
@@ -726,8 +731,7 @@ if args['source']:
 else:
     source_file = None
 
-# ########XML parse
-
+# zpracovavani XML stromu pomoci knihovny xml.etree.ElementTree
 tree = None
 try:
     if source_file:
@@ -739,7 +743,7 @@ except Exception as e:
     stderr.write("Error parsing source file \n")
     exit(31)
 
-# ##sort
+# serazeni instrukci podle poradi
 root = tree.getroot()
 if root.tag != 'program':
     stderr.write("not a program\n")
@@ -761,6 +765,8 @@ for child in root:
         exit(32)
 
 instruction_count = 1
+
+# naplneni seznamu instrukci
 for element in root:
     instructions.append(Instruction(element.attrib['opcode'].upper(), instruction_count))
     for subelement in element:
@@ -768,23 +774,22 @@ for element in root:
     instruction_count += 1
 
 for child in root:
-  # check that there are not diplicates in child elements
   dup = set()
   for c in child:
     if c.tag not in dup:
       dup.add(c.tag)
   if len(dup) != len(child):
-    stderr.write("Found duplicate <arg#> elements, exiting...\n")
+    stderr.write("error duplicate elements\n")
     exit(32)
 
+
+# smycka prochazi vsechny instrukce, kontroluje spravne pocty argumentu a uklada navesti do slovniku labels
 for i in instructions:
     check_instruction(i)
-
-for i in instructions:
     if i.instr_opcode == "LABEL":
         labels.update({i.args[0].value: i.number})
 
-
+# hlavni smycka, vykonava instrukce
 while position != len(instructions):
     interpret_instruction(instructions[position])
     position += 1
