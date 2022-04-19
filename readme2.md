@@ -16,3 +16,4 @@ Pro načítání vstupu se využívá knihovna  ```xml.etree.ElementTree```. Zpr
 ### 1.3 Interpretace kódu
 
 #### 1.3.1 Rámce
+Všechny rámce jsou realizovány pomocí globálních proměnných. Globální rámec v podobě slovníku ```GF```, dočasný rámec v podobě proměnné ```TF``` a lokální rámec v podobě seznamu ```LF```
