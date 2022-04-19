@@ -8,10 +8,10 @@ Login: xbilek25
 Úkolem skriptu je interpretace kódu jazyka IPPcode22.
 
 ### 1.1 Zpracování argumentů
-Pro zpracovánní argumentů se využívá knihovna ```argparse```
+Pro zpracovánní argumentů se využívá knihovna ```argparse```.
 
 ### 1.2 Načítání vstupu
-Pro načítání vstupu se využívá knihovna  ```xml.etree.ElementTree```. Zpracovane instrukce jsou uloženy do seznamu ```instructions```
+Pro načítání vstupu se využívá knihovna  ```xml.etree.ElementTree```. Zpracovane instrukce jsou uloženy do seznamu ```instructions```.
 
 ### 1.3 Interpretace kódu
 
@@ -19,7 +19,7 @@ Pro načítání vstupu se využívá knihovna  ```xml.etree.ElementTree```. Zpr
 Pro přístup k instrukcím, proměnným a argumentům slouží tříd ```Instruction```, ```Argument``` a ```Variable```.
 
 #### 1.3.2 Rámce
-Všechny rámce jsou realizovány pomocí globálních proměnných. Globální rámec v podobě slovníku ```GF```, dočasný rámec v podobě proměnné ```TF``` a lokální rámec v podobě seznamu ```LF```
+Všechny rámce jsou realizovány pomocí globálních proměnných. Globální rámec v podobě slovníku ```GF```, dočasný rámec v podobě proměnné ```TF``` a lokální rámec v podobě seznamu ```LF```.
 
 #### 1.3.3 Funkce pro vykonávání instrukcí
 Pro každou instrukci je implementována funkce, která ji vykoná. Tyto funkce jsou volány pomocí funkce ```interpret_instruction```, která podle ```opcode``` instrukce na vstupu zavolá odpovídající funkci.
