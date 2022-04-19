@@ -17,3 +17,12 @@ Pro načítání vstupu se využívá knihovna  ```xml.etree.ElementTree```. Zpr
 
 #### 1.3.1 Rámce
 Všechny rámce jsou realizovány pomocí globálních proměnných. Globální rámec v podobě slovníku ```GF```, dočasný rámec v podobě proměnné ```TF``` a lokální rámec v podobě seznamu ```LF```
+
+#### 1.3.2 Funkce pro vykonávání instrukcí
+Pro každou instrukci je implementována funkce, která ji vykoná. Tyto funkce jsou volány pomocí funkce ```interpret_instruction```, která podle ```opcode``` instrukce na vstupu zavolá odpovídající funkci.
+
+#### 1.3.3 Průchod programem
+Průchod programem probíhá ve dvou cyklech. Prvni for cyklus projde všechny instrukce, zkontroluje je pomocí funkce ```check_instruction``` a pokud se jedná o návěští, uloží jej do slovníku ```labels```. Druhým cyklem je cyklus while, který procház všechny instrukce a každou vykoná pomocí funkce ```interpret_instruction```. Po každé vykonané instrukci se inkrementuje pozice v programu v podobě globální porměnné ```posiion```.
+
+#### 1.3.4 Skokové instrukce
+
