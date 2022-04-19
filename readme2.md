@@ -11,3 +11,8 @@ Login: xbilek25
 Pro zpracovánní argumentů se využívá knihovna ```argparse```
 
 ### 1.2 Načítání vstupu
+Pro načítání vstupu se využívá knihovna  ```xml.etree.ElementTree```. Zpracovane instrukce jsou uloženy do seznamu ```instructions```
+
+### 1.3 Interpretace kódu
+
+#### 1.3.1 Rámce
